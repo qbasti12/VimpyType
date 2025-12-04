@@ -1,0 +1,191 @@
+:root {
+    /* --bg-color inherited from base.css */
+    --text-color: #f0f0f0;
+    --primary-color: #e0e5ec;
+    --font-family: 'Poppins', sans-serif;
+    --border-radius: 7mm;
+}
+
+body {
+    background-color: var(--bg-color);
+}
+
+/* Reset base styles that conflict */
+button, .mode-btn, .action-btn, .key {
+    background: none !important;
+    box-shadow: none !important;
+    border: none !important;
+    transform: none !important;
+    overflow: visible !important;
+}
+
+button:active, .mode-btn:active, .action-btn:active, .key.active {
+    transform: none !important;
+}
+
+/* 3D Button Implementation */
+button, .key {
+    position: relative;
+    outline: none;
+    padding: 0;
+    margin: 0;
+    /* Ensure size is handled by content or fixed for keys */
+}
+
+/* Top Layer */
+button .top, .key .top {
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 238);
+    font-family: var(--font-family);
+    color: rgb(36, 38, 34);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius);
+    outline: 2px solid rgb(36, 38, 34);
+    transition: 0.2s;
+    position: relative;
+    overflow: hidden;
+    padding: 0.8rem 1.5rem; /* Restore padding */
+    border: none; /* Remove base border */
+}
+
+.key .top {
+    padding: 0; /* Keys don't need padding */
+}
+
+/* Bottom Layer */
+button .bottom, .key .bottom {
+    display: block !important; /* Force show */
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgb(229, 229, 199);
+    top: 10px;
+    left: 0;
+    border-radius: var(--border-radius);
+    outline: 2px solid rgb(36, 38, 34);
+    z-index: -1;
+}
+
+/* Bottom details */
+button .bottom::before, .key .bottom::before {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 12px;
+    background: rgb(36, 38, 34);
+    bottom: -2px; /* Reverted for normal buttons */
+    left: 20%;
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+button .bottom::after, .key .bottom::after {
+    position: absolute;
+    content: "";
+    width: 3px;
+    height: 12px;
+    background: rgb(36, 38, 34);
+    bottom: -2px; /* Reverted for normal buttons */
+    left: 80%;
+    border-radius: 2px;
+    transition: height 0.2s ease;
+}
+
+/* Grow lines on hover when top lifts */
+button:hover .bottom::before, .key:hover .bottom::before,
+button:hover .bottom::after, .key:hover .bottom::after {
+    height: 17px; /* 12px + 5px lift */
+}
+
+/* Adjustments for small buttons (Keys & Theme Switcher) */
+.key .bottom::before, .theme-btn .bottom::before {
+    left: 25%;
+}
+
+.key .bottom::after, .theme-btn .bottom::after {
+    left: 75%;
+}
+
+/* Specific fix for keys: Raise lines to prevent overlap */
+.key .bottom::before, .key .bottom::after {
+    bottom: 2px;
+}
+
+/* Active State */
+
+
+/* Middle Layer (Pseudo-element on button) */
+button::before, .key::before {
+    position: absolute;
+    content: "";
+    width: calc(100% + 2px);
+    height: 100%;
+    background: rgb(140, 140, 140);
+    top: 15px; /* Increased from 14px for more visible gray border */
+    left: -1px;
+    border-radius: var(--border-radius);
+    outline: 2px solid rgb(36, 38, 34);
+    z-index: -2;
+}
+
+/* Shine Effect */
+button .top::before, .key .top::before {
+    position: absolute;
+    content: "";
+    width: 15px;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    transform: skewX(30deg);
+    left: -20px;
+    transition: 0.25s;
+}
+
+button:active .top::before, .key.active .top::before {
+    left: calc(100% + 20px);
+}
+
+/* Specific Adjustments for App Context */
+
+
+.key {
+    width: 60px; /* Slightly larger for 3D effect */
+    height: 60px;
+    margin-bottom: 15px; /* Space for 3D depth */
+}
+
+/* Fix for mode/action buttons to match 3D style */
+.mode-btn .top, .action-btn .top, .btn-secondary .top {
+    background: rgb(255, 255, 238);
+    color: rgb(36, 38, 34);
+    border: none;
+}
+
+.mode-btn:hover .top, .action-btn:hover .top, .btn-secondary:hover .top {
+    background: rgb(255, 255, 238);
+    color: rgb(36, 38, 34);
+}
+
+.mode-btn:active .top, .action-btn:active .top, .btn-secondary:active .top {
+    background: rgb(255, 255, 238);
+    color: rgb(36, 38, 34);
+}
+
+/* Hover Effect: Lift up 5px */
+button:hover .top, .key:hover .top {
+    transform: translateY(-5px);
+}
+
+/* Ensure active state presses down correctly (override hover) */
+button:active .top, .key.active .top {
+    transform: translateY(10px);
+}
+
+.practice-target {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 2px solid rgb(36, 38, 34);
+    box-shadow: 10px 10px 0 rgb(36, 38, 34);
+}

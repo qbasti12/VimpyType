@@ -1,0 +1,239 @@
+:root {
+    /* Dark Mode Default */
+    --bg-color: #222222;
+    --text-color: #eeeeee;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --accent-color: #28a745;
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --border-radius: 12px;
+    --transition-speed: 0.2s;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg-color: #ffffff;
+        --text-color: #333333;
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: background-color var(--transition-speed), color var(--transition-speed);
+}
+
+/* Utilities */
+.hidden { display: none !important; }
+.active { display: flex !important; }
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    color: white;
+    text-align: center;
+}
+
+.intro-content h1 { font-size: 3rem; margin-bottom: 1rem; }
+.intro-content p { font-size: 1.2rem; margin-bottom: 0.5rem; opacity: 0.9; }
+.intro-content button { margin-top: 2rem; }
+
+/* App Container */
+#app-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+
+.theme-switcher { display: flex; gap: 10px; }
+
+/* Screens */
+.screen {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 { font-size: 2rem; margin-bottom: 2rem; }
+
+/* Buttons */
+button, .key {
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    font-size: 1rem;
+    /* Remove padding from container, move to .top if needed or keep layout flexible */
+    padding: 0; 
+    border-radius: var(--border-radius);
+    transition: transform 0.1s, opacity 0.2s;
+    position: relative;
+    background: none; /* Let themes handle background */
+}
+
+/* Default behavior for inner layers: fill the button */
+button .top, .key .top {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: inherit;
+    /* Default padding for text content */
+    padding: 0.8rem 1.5rem; 
+}
+
+button .bottom, .key .bottom {
+    display: none; /* Hidden by default, shown in 3D theme */
+}
+
+button:active { transform: scale(0.95); }
+
+.btn-primary .top { background-color: var(--primary-color); color: white; font-weight: 600; }
+.btn-secondary .top { background-color: var(--secondary-color); color: white; }
+
+.mode-buttons, .action-buttons {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.mode-btn, .action-btn {
+    font-size: 1.2rem;
+    /* Remove padding/border from container, applied to .top in themes or base */
+    background-color: transparent;
+    border: none;
+    color: var(--text-color);
+}
+
+.mode-btn .top, .action-btn .top {
+    padding: 1.5rem 2.5rem;
+    background-color: var(--bg-color);
+    border: 2px solid var(--text-color);
+}
+
+.mode-btn:hover .top, .action-btn:hover .top {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Practice Target */
+.practice-target {
+    font-size: 5rem;
+    font-weight: bold;
+    margin: 2rem 0;
+    font-family: monospace;
+    background: rgba(0,0,0,0.05);
+    padding: 2rem;
+    border-radius: 20px;
+    min-width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Keyboard */
+#keyboard-container {
+    margin-top: auto;
+    padding: 2rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.key {
+    width: 50px;
+    height: 50px;
+    /* Remove border from container */
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.2rem;
+    transition: all 0.1s;
+    /* Removed text-transform to preserve case sensitivity */
+}
+
+.key .top {
+    padding: 0; /* Keys are fixed size, center content */
+    border: 2px solid var(--text-color);
+}
+
+.key.active .top {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.key.active {
+    transform: translateY(2px);
+}
+
+.key.highlight .top {
+    box-shadow: 0 0 15px var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Tutorial Controls */
+.tutorial-controls {
+    margin-top: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.tutorial-content {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin: 2rem 0;
+}
+

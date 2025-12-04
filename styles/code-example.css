@@ -1,0 +1,57 @@
+
+/* Code Example Window */
+.code-example-container {
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem auto;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.code-instruction {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.code-example {
+    background-color: #1e1e1e; /* Dark background for code */
+    color: #d4d4d4; /* Light text */
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Syntax Highlighting Simulation (Basic) */
+.code-example code {
+    display: block;
+}
+
+/* Challenge Mode Specifics */
+.challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#challenge-score-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.challenge-controls {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+}

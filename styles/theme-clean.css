@@ -1,0 +1,43 @@
+/* Clean Theme now inherits from base.css (Dark/Light mode) */
+/* It mainly ensures the button structure works with standard colors */
+
+.key {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.key .top {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.key.active .top {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.key.active {
+    transform: translateY(2px);
+}
+
+/* Ensure buttons use theme colors */
+.mode-btn .top, .action-btn .top, .theme-btn .top {
+    background: var(--bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.mode-btn:hover .top, .action-btn:hover .top, .theme-btn:hover .top {
+    background: var(--text-color);
+    color: var(--bg-color);
+}
+
+.btn-primary .top {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
