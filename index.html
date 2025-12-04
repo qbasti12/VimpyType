@@ -1,196 +1,199 @@
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VimpyType - Master Vim Movement</title>
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/code-example.css">
-    <link id="theme-link" rel="stylesheet" href="styles/theme-clean.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/code-example.css" />
+    <link id="theme-link" rel="stylesheet" href="styles/theme-clean.css" />
+  </head>
+  <body>
     <!-- Intro Overlay -->
     <div id="intro-overlay" class="overlay">
-        <div class="intro-content">
-            <h1>VimpyType</h1>
-            <p>Dein interaktiver Vim-Trainer.</p>
-            <p>Lerne die Bewegungen. Meistere den Flow.</p>
-            <button id="start-btn" class="btn-primary">
-                <div class="top">Los geht's</div>
-                <div class="bottom"></div>
-            </button>
-        </div>
+      <div class="intro-content">
+        <h1>VimpyType</h1>
+        <p>Dein interaktiver Vim-Trainer.</p>
+        <p>Lerne die Bewegungen. Meistere den Flow.</p>
+        <button id="start-btn" class="btn-primary">
+          <div class="top">Los geht's</div>
+          <div class="bottom"></div>
+        </button>
+      </div>
     </div>
 
     <!-- App Container -->
     <div id="app-container" class="hidden">
-        
-        <!-- Header / Theme Switcher -->
-        <header>
-            <div class="logo">VimpyType</div>
-            <div class="theme-switcher">
-                <button class="theme-btn" data-theme="clean">
-                    <div class="top">Clean</div>
-                    <div class="bottom"></div>
-                </button>
-                <button class="theme-btn" data-theme="color">
-                    <div class="top">Colorful</div>
-                    <div class="bottom"></div>
-                </button>
-                <button class="theme-btn" data-theme="3d">
-                    <div class="top">3D</div>
-                    <div class="bottom"></div>
-                </button>
-                
-                <!-- Color Picker (Hidden by default) -->
-                <div id="color-picker-container" class="hidden">
-                    <div class="color-presets">
-                        <button class="color-swatch" data-color="#007bff" style="background-color: #007bff;"></button>
-                        <button class="color-swatch" data-color="#28a745" style="background-color: #28a745;"></button>
-                        <button class="color-swatch" data-color="#dc3545" style="background-color: #dc3545;"></button>
-                        <button class="color-swatch" data-color="#ffc107" style="background-color: #ffc107;"></button>
-                        <button class="color-swatch" data-color="#6f42c1" style="background-color: #6f42c1;"></button>
-                        <div class="custom-color-wrapper">
-                            <input type="color" id="accent-picker" value="#007bff" title="Custom Color">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
+      <!-- Header / Theme Switcher -->
+      <header>
+        <div class="logo">VimpyType</div>
+        <div class="theme-switcher">
+          <button class="theme-btn" data-theme="clean">
+            <div class="top">Clean</div>
+            <div class="bottom"></div>
+          </button>
+          <button class="theme-btn" data-theme="color">
+            <div class="top">Colorful</div>
+            <div class="bottom"></div>
+          </button>
+          <button class="theme-btn" data-theme="3d">
+            <div class="top">3D</div>
+            <div class="bottom"></div>
+          </button>
 
-        <!-- Mode Selection Screen -->
-        <section id="mode-selection" class="screen active">
-            <h2>Wähle deine Schwierigkeit</h2>
-            <div class="mode-buttons">
-                <button class="mode-btn" data-mode="easy">
-                    <div class="top">Easy</div>
-                    <div class="bottom"></div>
-                </button>
-                <button class="mode-btn" data-mode="medium">
-                    <div class="top">Medium</div>
-                    <div class="bottom"></div>
-                </button>
-                <button class="mode-btn" data-mode="hard">
-                    <div class="top">Hard</div>
-                    <div class="bottom"></div>
-                </button>
-                <button class="mode-btn" data-mode="meister">
-                    <div class="top">Meister</div>
-                    <div class="bottom"></div>
-                </button>
+          <!-- Color Picker (Hidden by default) -->
+          <div id="color-picker-container" class="hidden">
+            <div class="color-presets">
+              <button
+                class="color-swatch"
+                data-color="#007bff"
+                style="background-color: #007bff"
+              ></button>
+              <button
+                class="color-swatch"
+                data-color="#28a745"
+                style="background-color: #28a745"
+              ></button>
+              <button
+                class="color-swatch"
+                data-color="#dc3545"
+                style="background-color: #dc3545"
+              ></button>
+              <button
+                class="color-swatch"
+                data-color="#ffc107"
+                style="background-color: #ffc107"
+              ></button>
+              <button
+                class="color-swatch"
+                data-color="#6f42c1"
+                style="background-color: #6f42c1"
+              ></button>
+              <div class="custom-color-wrapper">
+                <input
+                  type="color"
+                  id="accent-picker"
+                  value="#007bff"
+                  title="Custom Color"
+                />
+              </div>
             </div>
-        </section>
-
-        <!-- Dashboard Screen (Learn vs Practice) -->
-        <section id="dashboard" class="screen hidden">
-            <h2 id="current-mode-display">Mode: Easy</h2>
-            <div class="action-buttons">
-                <button id="btn-learn" class="action-btn">
-                    <div class="top">Lernen</div>
-                    <div class="bottom"></div>
-                </button>
-                <button id="btn-practice" class="action-btn">
-                    <div class="top">Üben</div>
-                    <div class="bottom"></div>
-                </button>
-                <button id="btn-challenge" class="action-btn">
-                    <div class="top">Challenge</div>
-                    <div class="bottom"></div>
-                </button>
-            </div>
-            <button id="btn-back-mode" class="btn-secondary">
-                <div class="top">Zurück</div>
-                <div class="bottom"></div>
-            </button>
-        </section>
-
-        <!-- Tutorial Screen -->
-        <section id="tutorial-screen" class="screen hidden">
-            <div class="tutorial-header">
-                <h3>Tutorial</h3>
-                <div id="tutorial-progress">Step 1/5</div>
-            </div>
-            <div class="tutorial-content">
-                <div class="code-example-container">
-                    <div class="code-instruction" id="tutorial-text">Drücke 'j', um nach unten zu navigieren.</div>
-                    <pre class="code-example"><code class="language-python">def calculate_sum(numbers):
-    total = 0
-    for num in numbers:
-        total += num
-    return total
-
-result = calculate_sum([1, 2, 3, 4, 5])
-print(f"Sum: {result}")</code></pre>
-                </div>
-            </div>
-            <div class="tutorial-controls">
-                <button id="btn-tutorial-next" class="btn-primary" disabled>
-                    <div class="top">Weiter</div>
-                    <div class="bottom"></div>
-                </button>
-                <button id="btn-tutorial-exit" class="btn-secondary">
-                    <div class="top">Beenden</div>
-                    <div class="bottom"></div>
-                </button>
-            </div>
-        </section>
-
-        <!-- Practice Screen -->
-        <section id="practice-screen" class="screen hidden">
-            <div class="practice-header">
-                <h3>Practice</h3>
-                <div id="score-display">Score: 0</div>
-            </div>
-            <div class="practice-target">
-                <div class="code-example-container">
-                    <div class="code-instruction">Mache: <span id="target-key">k</span></div>
-                    <pre class="code-example"><code class="language-python">def calculate_sum(numbers):
-    total = 0
-    for num in numbers:
-        total += num
-    return total
-
-result = calculate_sum([1, 2, 3, 4, 5])
-print(f"Sum: {result}")</code></pre>
-                </div>
-            </div>
-            <div class="practice-controls">
-                <button id="btn-practice-exit" class="btn-secondary">
-                    <div class="top">Beenden</div>
-                    <div class="bottom"></div>
-                </button>
-            </div>
-        </section>
-
-        <!-- Challenge Screen -->
-        <section id="challenge-screen" class="screen hidden">
-            <div class="challenge-header">
-                <h3>Challenge Mode</h3>
-                <div id="challenge-score-display">Score: 0</div>
-            </div>
-            <div class="challenge-content">
-                <div class="code-example-container">
-                    <div class="code-instruction" id="challenge-instruction">Lade Challenge...</div>
-                    <pre class="code-example"><code id="challenge-code" class="language-python"></code></pre>
-                </div>
-            </div>
-            <div class="challenge-controls">
-                <button id="btn-challenge-exit" class="btn-secondary">
-                    <div class="top">Beenden</div>
-                    <div class="bottom"></div>
-                </button>
-            </div>
-        </section>
-
-        <!-- Virtual Keyboard -->
-        <div id="keyboard-container">
-            <!-- Keys will be generated by JS -->
+          </div>
         </div>
+      </header>
 
+      <!-- Mode Selection Screen -->
+      <section id="mode-selection" class="screen active">
+        <h2>Wähle deine Schwierigkeit</h2>
+        <div class="mode-buttons">
+          <button class="mode-btn" data-mode="easy">
+            <div class="top">Easy</div>
+            <div class="bottom"></div>
+          </button>
+          <button class="mode-btn" data-mode="medium">
+            <div class="top">Medium</div>
+            <div class="bottom"></div>
+          </button>
+          <button class="mode-btn" data-mode="hard">
+            <div class="top">Hard</div>
+            <div class="bottom"></div>
+          </button>
+          <button class="mode-btn" data-mode="meister">
+            <div class="top">Meister</div>
+            <div class="bottom"></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Dashboard Screen (Learn vs Practice) -->
+      <section id="dashboard" class="screen hidden">
+        <h2 id="current-mode-display">Mode: Easy</h2>
+        <div class="action-buttons">
+          <button id="btn-learn" class="action-btn">
+            <div class="top">Lernen</div>
+            <div class="bottom"></div>
+          </button>
+          <button id="btn-practice" class="action-btn">
+            <div class="top">Üben</div>
+            <div class="bottom"></div>
+          </button>
+          <button id="btn-challenge" class="action-btn">
+            <div class="top">Challenge</div>
+            <div class="bottom"></div>
+          </button>
+        </div>
+        <button id="btn-back-mode" class="btn-secondary">
+          <div class="top">Zurück</div>
+          <div class="bottom"></div>
+        </button>
+      </section>
+
+      <!-- Tutorial Screen -->
+      <section id="tutorial-screen" class="screen hidden">
+        <div class="tutorial-header">
+          <h3>Tutorial</h3>
+          <div id="tutorial-progress">Step 1/5</div>
+        </div>
+        <div class="tutorial-content">
+          <div class="code-example-container">
+            <!-- Injected by VimEditor -->
+          </div>
+        </div>
+        <div class="tutorial-controls">
+          <button id="btn-tutorial-next" class="btn-primary" disabled>
+            <div class="top">Weiter</div>
+            <div class="bottom"></div>
+          </button>
+          <button id="btn-tutorial-exit" class="btn-secondary">
+            <div class="top">Beenden</div>
+            <div class="bottom"></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Practice Screen -->
+      <section id="practice-screen" class="screen hidden">
+        <div class="practice-header">
+          <h3>Practice</h3>
+          <div id="score-display">Score: 0</div>
+        </div>
+        <div class="code-example-container">
+          <!-- Injected by VimEditor -->
+        </div>
+        <div class="practice-controls">
+          <button id="btn-practice-exit" class="btn-secondary">
+            <div class="top">Beenden</div>
+            <div class="bottom"></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Challenge Screen -->
+      <section id="challenge-screen" class="screen hidden">
+        <div class="challenge-header">
+          <h3>Challenge Mode</h3>
+          <div id="challenge-score-display">Score: 0</div>
+        </div>
+        <div class="challenge-content">
+          <div class="code-example-container">
+            <!-- Injected by VimEditor -->
+          </div>
+        </div>
+        <div class="challenge-controls">
+          <button id="btn-challenge-exit" class="btn-secondary">
+            <div class="top">Beenden</div>
+            <div class="bottom"></div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Virtual Keyboard -->
+      <div id="keyboard-container">
+        <!-- Keys will be generated by JS -->
+      </div>
     </div>
 
     <!-- Scripts -->
     <script type="module" src="js/main.js"></script>
-</body>
+  </body>
 </html>

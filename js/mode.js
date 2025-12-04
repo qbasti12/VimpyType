@@ -1,7 +1,7 @@
 export const modes = {
     easy: {
         id: 'easy',
-        keys: ['h', 'j', 'k', 'l']
+        keys: ['h', 'j', 'k', 'l', 'w', 'b', '$', '%', 'gg', 'G']
     },
     medium: {
         id: 'medium',

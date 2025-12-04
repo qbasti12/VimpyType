@@ -132,7 +132,7 @@ class VimpyTypeApp {
     startTutorial() {
         this.state = 'tutorial';
         this.hideAllScreens();
-        this.tutorial.start();
+        this.tutorial.start(this.currentMode.id);
     }
 
     startPractice() {
@@ -186,5 +186,5 @@ class VimpyTypeApp {
 
 // Start App
 window.addEventListener('DOMContentLoaded', () => {
-    new VimpyTypeApp();
+    window.app = new VimpyTypeApp();
 });

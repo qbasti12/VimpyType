@@ -11,10 +11,18 @@ export class Practice {
 
         this.elements = {
             screen: document.getElementById('practice-screen'),
-            target: document.getElementById('target-key'),
             score: document.getElementById('score-display'),
-            exitBtn: document.getElementById('btn-practice-exit')
+            exitBtn: document.getElementById('btn-practice-exit'),
+            editorContainer: document.querySelector('#practice-screen .code-example-container')
         };
+
+        // Initialize Vim Editor
+        import('./vim-editor.js').then(module => {
+            this.editor = new module.VimEditor(this.elements.editorContainer);
+            this.editor.setCode(`def practice():
+    # Type the keys shown above
+    pass`, 'practice.py', { line: 2, col: 4 });
+        });
 
         this.elements.exitBtn.addEventListener('click', () => this.stop());
 
@@ -52,7 +60,11 @@ export class Practice {
         const randomIndex = Math.floor(Math.random() * this.modeKeys.length);
         this.currentKey = this.modeKeys[randomIndex];
 
-        this.elements.target.textContent = this.currentKey;
+        this.currentKey = this.modeKeys[randomIndex];
+
+        if (this.editor) {
+            this.editor.setInstruction(`Mache: ${this.currentKey}`);
+        }
         this.keyboard.clearHighlights();
         this.keyBuffer = '';
     }
@@ -76,12 +88,16 @@ export class Practice {
             this.updateScore();
             this.playSound();
 
-            // Visual feedback on target
-            this.elements.target.style.color = 'var(--accent-color)';
-            setTimeout(() => {
-                this.elements.target.style.color = 'inherit';
+            // Visual feedback on target (via instruction color)
+            if (this.editor) {
+                this.editor.instructionEl.style.color = 'var(--accent-color)';
+                setTimeout(() => {
+                    this.editor.instructionEl.style.color = 'inherit';
+                    this.nextKey();
+                }, 200);
+            } else {
                 this.nextKey();
-            }, 200);
+            }
         } else if (this.currentKey.startsWith(this.keyBuffer)) {
             // Partial match - wait for next character (no penalty on timeout)
             this.bufferTimeout = setTimeout(() => {
@@ -92,16 +108,23 @@ export class Practice {
             // No match - wrong key
             this.handleWrongKey();
         }
+        
+        // Update Editor Cursor (Simulation)
+        if (this.editor) {
+             this.editor.handleInput(key);
+        }
     }
 
     handleWrongKey() {
         this.keyBuffer = '';
         this.score = Math.max(0, this.score - 5);
         this.updateScore();
-        this.elements.target.style.color = 'red';
-        setTimeout(() => {
-            this.elements.target.style.color = 'inherit';
-        }, 200);
+        if (this.editor) {
+            this.editor.instructionEl.style.color = 'red';
+            setTimeout(() => {
+                this.editor.instructionEl.style.color = 'inherit';
+            }, 200);
+        }
     }
 
     updateScore() {

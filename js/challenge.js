@@ -10,11 +10,15 @@ export class Challenge {
 
         this.elements = {
             screen: document.getElementById('challenge-screen'),
-            instruction: document.getElementById('challenge-instruction'),
-            code: document.getElementById('challenge-code'),
             score: document.getElementById('challenge-score-display'),
-            exitBtn: document.getElementById('btn-challenge-exit')
+            exitBtn: document.getElementById('btn-challenge-exit'),
+            editorContainer: document.querySelector('#challenge-screen .code-example-container')
         };
+
+        // Initialize Vim Editor
+        import('./vim-editor.js').then(module => {
+            this.editor = new module.VimEditor(this.elements.editorContainer);
+        });
 
         this.elements.exitBtn.addEventListener('click', () => this.stop());
 
@@ -98,12 +102,13 @@ if __name__ == "__main__":
         }
 
         const challenge = this.challenges[this.currentChallengeIndex];
-        this.elements.instruction.textContent = challenge.instruction;
-        this.elements.code.textContent = challenge.code;
-        this.keyBuffer = '';
         
-        // No keyboard hints in challenge mode!
-        this.keyboard.clearHighlights();
+        if (this.editor) {
+            this.editor.setCode(challenge.code);
+            this.editor.setInstruction(challenge.instruction);
+        }
+        
+        this.keyBuffer = '';
     }
 
     handleInput(key) {
@@ -149,24 +154,29 @@ if __name__ == "__main__":
                 this.keyBuffer = this.keyBuffer.slice(-1); // Keep last key
             }
         }
+        
+        // Update Editor Cursor (Simulation)
+        if (this.editor) {
+             this.editor.handleInput(key);
+        }
     }
 
     success() {
         this.score += 100;
         this.updateScore();
-        this.elements.instruction.textContent = "Richtig! Nächste Challenge...";
-        this.elements.instruction.style.color = "var(--accent-color)";
+        if (this.editor) this.editor.setInstruction("Richtig! Nächste Challenge...");
         
         setTimeout(() => {
-            this.elements.instruction.style.color = "var(--text-primary)";
             this.currentChallengeIndex++;
             this.loadChallenge();
         }, 1000);
     }
 
     finish() {
-        this.elements.instruction.textContent = `Challenge Complete! Final Score: ${this.score}`;
-        this.elements.code.textContent = "Great job!";
+        if (this.editor) {
+            this.editor.setInstruction(`Challenge Complete! Final Score: ${this.score}`);
+            this.editor.setCode("Great job!");
+        }
     }
 
     updateScore() {
